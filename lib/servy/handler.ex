@@ -2,10 +2,17 @@ defmodule Servy.Handler do
   def handle(request) do
     request
     |> parse()
+    |> rewrite_path()
     |> log()
     |> route()
     |> format_response()
   end
+  
+  def rewrite_path(%{path: "/wildlife"} = conv) do
+    %{ conv | path: "/wildthings"}
+  end
+  
+  def rewrite_path(conv), do: conv
 
   def log(conv), do: IO.inspect(conv)
 
@@ -34,6 +41,10 @@ defmodule Servy.Handler do
 
   def route(conv, "GET", "/bears") do
     %{conv | status: 200, resp_body: "Teddy, Smokey, Paddington"}
+  end
+  
+  def route(conv, "GET", "/bears/" <> id) do
+    %{conv | status: 200, resp_body: "Bear #{id}"}
   end
   
   def route(conv, _method, path) do
