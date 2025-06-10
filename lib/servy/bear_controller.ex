@@ -31,7 +31,7 @@ defmodule Servy.BearController do
   def create(%Conv{} = conv, %{"name" => name, "type" => type}) do
     %{
       conv
-      | status: 200,
+      | status: 201,
         resp_body: "Created a #{type} bear named #{name}!"
     }
   end
